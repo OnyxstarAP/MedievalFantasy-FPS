@@ -11,7 +11,7 @@ public class Player_Projectile : MonoBehaviour
     [SerializeField]
      GameObject player;
     [SerializeField]
-    private float chargeLimit = 2.5f;
+    private float maxChargeTime = 2.5f;
     [SerializeField]
     private float expireLimit = 10;
     [SerializeField]
@@ -41,13 +41,10 @@ public class Player_Projectile : MonoBehaviour
     private void Awake()
     {
         player = GameObject.Find("Player");
-        firePoint = player.GetComponent<PlayerControllerScript>().firePoint;
-        mainCamera = player.GetComponent<PlayerControllerScript>().mainCamera;
-    }
-    private void Start()
-    {
         rb = gameObject.GetComponent<Rigidbody>();
         meshRenderer = gameObject.GetComponent<MeshRenderer>();
+        firePoint = player.GetComponent<PlayerControllerScript>().firePoint;
+        mainCamera = player.GetComponent<PlayerControllerScript>().mainCamera;
         neutralChargeMat = meshRenderer.material;
     }
     void Update()
@@ -61,20 +58,21 @@ public class Player_Projectile : MonoBehaviour
 
         if (isCharing && isThrown != true)
         { 
-            if(projectileCharge < chargeLimit)
+            if(projectileCharge < maxChargeTime)
             {
                 projectileCharge += 1 * Time.deltaTime;
-                if (projectileCharge > 1 && meshRenderer.material == neutralChargeMat)
+                if (projectileCharge > (maxChargeTime / 5 * 2) && meshRenderer.material == neutralChargeMat)
                 {
+                    // Changes the objects material to Mid-Charge
                     meshRenderer.material = midChargeMat;
                 }
 
             }
-            else if (projectileCharge > chargeLimit)
+            else if (projectileCharge >= maxChargeTime && isMaxCharged != true)
             {
-                projectileCharge = chargeLimit;
-                meshRenderer.material = maxChargeMat;
                 isMaxCharged = true;
+                meshRenderer.material = maxChargeMat;
+                projectileCharge = maxChargeTime;
             }
             projectileLock();
         }

@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
+
+    public GameObject levelFader;
+
     public void StartGame()
     {
-        SceneManager.LoadScene(1);
+        levelFader.GetComponent<SceneFader>().FadetoLevel(1);
     }
 
     public void CloseGame()

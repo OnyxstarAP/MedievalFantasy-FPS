@@ -7,9 +7,8 @@ public class BillboardScript : MonoBehaviour
     [SerializeField]
     private bool followPlayer = true;
     [SerializeField]
-    private bool FullFollow = false;
+    private bool XAxisFollow = false;
     public Transform target;
-
 
     private Transform enemySprite;
 
@@ -42,12 +41,12 @@ public class BillboardScript : MonoBehaviour
     {
         if (followPlayer == true)
         {
-            if (FullFollow == false)
+            if (XAxisFollow == false)
             {
                 Vector3 TagerPosition = new Vector3(target.position.x, transform.position.y, target.position.z);
                 transform.LookAt(TagerPosition);
             }
-            else if (FullFollow == true)
+            else if (XAxisFollow == true)
             {
                 transform.LookAt(target);
             }
