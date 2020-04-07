@@ -22,6 +22,10 @@ public class Player_Projectile : MonoBehaviour
     private bool isThrown;
 
     [SerializeField]
+    private Transform childObject;
+    [SerializeField]
+    private Transform weaponBody;
+    [SerializeField]
     private MeshRenderer meshRenderer;
     [SerializeField]
     private Material neutralChargeMat;
@@ -37,15 +41,22 @@ public class Player_Projectile : MonoBehaviour
 
 
     private Rigidbody rb;
-
+    private AudioSource throwsource;
+    private AudioSource chargeSource;
+    private AudioSource drawSource;
     private void Awake()
     {
         player = GameObject.Find("Player");
         rb = gameObject.GetComponent<Rigidbody>();
-        meshRenderer = gameObject.GetComponent<MeshRenderer>();
+        childObject = transform.GetChild(0);
+        weaponBody = transform.GetChild(1);
+        meshRenderer = childObject.GetComponent<MeshRenderer>();
         firePoint = player.GetComponent<PlayerControllerScript>().firePoint;
         mainCamera = player.GetComponent<PlayerControllerScript>().mainCamera;
         neutralChargeMat = meshRenderer.material;
+        throwsource = transform.GetComponent<AudioSource>();
+        chargeSource = childObject.GetComponent<AudioSource>();
+        drawSource = weaponBody.GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -64,12 +75,16 @@ public class Player_Projectile : MonoBehaviour
                 if (projectileCharge > (maxChargeTime / 5 * 2) && meshRenderer.material == neutralChargeMat)
                 {
                     // Changes the objects material to Mid-Charge
+                    chargeSource.pitch = 1;
+                    chargeSource.Play();
                     meshRenderer.material = midChargeMat;
                 }
 
             }
             else if (projectileCharge >= maxChargeTime && isMaxCharged != true)
             {
+                chargeSource.pitch = 1.25f;
+                chargeSource.Play();
                 isMaxCharged = true;
                 meshRenderer.material = maxChargeMat;
                 projectileCharge = maxChargeTime;
@@ -79,6 +94,7 @@ public class Player_Projectile : MonoBehaviour
 
         if (isCharing == false && isThrown == false)
         {
+            throwsource.Play();
             if (projectileCharge > 1)
             {
                 rb.AddForce(transform.forward * (projectileForce * projectileCharge));

@@ -12,10 +12,10 @@ EditorBuildSettings:
     path: Assets/Andre Assets/Andre Scenes/HubWorld_Scene.unity
     guid: 3f37208178f8b7242b9c42beaddaeeb6
   - enabled: 1
-    path: Assets/Andre Assets/Andre Scenes/TownDefense_Scene.unity
+    path: Assets/Andre Assets/Andre Scenes/TownLevel_Scene.unity
     guid: 1e0556ab3399c3140acacbba1038a072
-  - enabled: 1
-    path: Assets/Andre Assets/Andre Scenes/BoatBattle_Scene.unity
+  - enabled: 0
+    path: Assets/Andre Assets/Andre Scenes/BoatLevel_Scene.unity
     guid: b906365d04973b44d9b3144eaf87dbd8
   - enabled: 1
     path: Assets/Andre Assets/Andre Scenes/Tutorial_Scene.unity

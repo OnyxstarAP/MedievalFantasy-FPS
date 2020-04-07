@@ -45,14 +45,17 @@ public class PlayerControllerScript : MonoBehaviour
     private float jumpInput;
 
     public Transform mainCamera;
-    
 
+    private AudioSource stepSource;
+    private AudioSource jumpSource;
     private void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
         groundCheck = transform.GetChild(2);
         mainCamera = transform.GetChild(0);
         firePoint = mainCamera.GetChild(0);
+        stepSource = groundCheck.GetComponent<AudioSource>();
+        jumpSource = mainCamera.GetComponent<AudioSource>();
         startingMass = rb.mass;
     }
 
@@ -63,6 +66,7 @@ public class PlayerControllerScript : MonoBehaviour
         PlayerFire();
         //SceneReset();
         CanvasDisplay();
+        MovementSFX();
     }
 
     void FixedUpdate()
@@ -88,15 +92,20 @@ public class PlayerControllerScript : MonoBehaviour
 
         if (isGrounded == true)
         {
+            //jumpSource.pitch = 0.8f;
+            //jumpSource.Play();
             isJumping = false;
             rb.mass = startingMass;
             jumpTimer = 0;
+
         }
     }
     private void JumpInput()
     {
             if (Input.GetKey(KeyCode.Space) && jumpTimer < jumpLimit && isJumping != true)
             {
+                jumpSource.pitch = 1;
+                jumpSource.Play();
                 rb.AddForce(transform.up * (jumpForce * jumpInput), ForceMode.Impulse);
                 jumpTimer += 1 * Time.deltaTime;
             }
@@ -113,6 +122,16 @@ public class PlayerControllerScript : MonoBehaviour
         // Changes movement direction from Global to Local translation
         movementInput = transform.TransformDirection(movementInput);
         rb.MovePosition(transform.position + (movementInput * playerSpeed * Time.deltaTime));
+    }
+
+    private void MovementSFX()
+    {
+        if (stepSource.isPlaying == false && isGrounded && (Input.GetAxisRaw("Horizontal") != 0|| Input.GetAxisRaw("Vertical") != 0))
+        {
+            stepSource.volume = Random.Range(0.9f, 1);
+            stepSource.pitch = Random.Range(0.9f, 1.0f);
+            stepSource.Play();
+        }
     }
 
     private void PlayerFire()

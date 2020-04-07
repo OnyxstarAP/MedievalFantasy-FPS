@@ -933,6 +933,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5635500161256439017, guid: 41cbdc084ea68e3469fdc59c5e463960,
+        type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5635500161256439017, guid: 41cbdc084ea68e3469fdc59c5e463960,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5635500161256439017, guid: 41cbdc084ea68e3469fdc59c5e463960,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.10891175
+      objectReference: {fileID: 0}
+    - target: {fileID: 5635500161256439017, guid: 41cbdc084ea68e3469fdc59c5e463960,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5635500161305140945, guid: 41cbdc084ea68e3469fdc59c5e463960,
         type: 3}
       propertyPath: healthDisplay

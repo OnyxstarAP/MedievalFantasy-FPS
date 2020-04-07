@@ -8,19 +8,26 @@ public class BillboardScript : MonoBehaviour
     private bool followPlayer = true;
     [SerializeField]
     private bool XAxisFollow = false;
-    public Transform target;
+    public Transform billboardTarget;
 
     private Transform enemySprite;
 
     private SpriteRenderer spriteRenderer;
+
     [SerializeField]
     private Sprite spriteOriginal;
     [SerializeField]
     private Sprite spriteDamaged;
+    [SerializeField]
+    private Sprite spriteDefeated;
+    [SerializeField]
+    private Sprite spriteTelegraph;
 
-    private void Start()
+    public AudioSource damagedSound;
+
+    private void Awake()
     {
-        target = GameObject.Find("Player").transform;
+        billboardTarget = GameObject.Find("Player").transform;
         if (transform.childCount > 0)
         {
             enemySprite = transform.GetChild(0);
@@ -31,7 +38,9 @@ public class BillboardScript : MonoBehaviour
         }
         spriteRenderer = enemySprite.GetComponent<SpriteRenderer>();
         spriteOriginal = enemySprite.GetComponent<SpriteRenderer>().sprite;
+        damagedSound = GetComponent<AudioSource>();
     }
+
 
     void Update()
     {
@@ -43,12 +52,12 @@ public class BillboardScript : MonoBehaviour
         {
             if (XAxisFollow == false)
             {
-                Vector3 TagerPosition = new Vector3(target.position.x, transform.position.y, target.position.z);
+                Vector3 TagerPosition = new Vector3(billboardTarget.position.x, transform.position.y, billboardTarget.position.z);
                 transform.LookAt(TagerPosition);
             }
             else if (XAxisFollow == true)
             {
-                transform.LookAt(target);
+                transform.LookAt(billboardTarget);
             }
         }
     }
@@ -56,12 +65,36 @@ public class BillboardScript : MonoBehaviour
     public void EnemyDamaged()
     {
         StartCoroutine(damaged());
+
+        IEnumerator damaged()
+        {
+            print("Enemy was Damaged");
+            damagedSound.Play();
+            spriteRenderer.sprite = spriteDamaged;
+            yield return new WaitForSeconds(1.5f);
+            spriteRenderer.sprite = spriteOriginal;
+        }
     }
-     IEnumerator damaged()
+
+    public void EnemyDefeated()
     {
-        print("Damaged is working");
-        spriteRenderer.sprite = spriteDamaged;
-        yield return new WaitForSeconds(1.5f);
+        StartCoroutine(defeated());
+
+        IEnumerator defeated()
+        {
+            print("The Enemy has been Defeated");
+            spriteRenderer.sprite = spriteDefeated;
+            yield return new WaitForSeconds(1.5f);
+        }
+    }
+
+    public void EnemyTelegraph()
+    {
+        spriteRenderer.sprite = spriteTelegraph;
+    }
+
+    public void EnemyNormal()
+    {
         spriteRenderer.sprite = spriteOriginal;
     }
 

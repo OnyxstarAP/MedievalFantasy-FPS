@@ -7,10 +7,15 @@ public class MainMenuScript : MonoBehaviour
 {
 
     public GameObject levelFader;
+    private SceneFader scenefader;
 
+    private void Start()
+    {
+        scenefader = levelFader.GetComponent<SceneFader>();
+    }
     public void StartGame()
     {
-        levelFader.GetComponent<SceneFader>().FadetoLevel(1);
+        scenefader.FadetoLevel(1);
     }
 
     public void CloseGame()
@@ -19,7 +24,7 @@ public class MainMenuScript : MonoBehaviour
     }
     public void EnterTutorial()
     {
-        SceneManager.LoadScene(4);
+        scenefader.FadetoLevel(4);
     }
 
 }
