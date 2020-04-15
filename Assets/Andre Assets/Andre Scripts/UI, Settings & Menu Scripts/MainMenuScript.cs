@@ -15,7 +15,7 @@ public class MainMenuScript : MonoBehaviour
     }
     public void StartGame()
     {
-        scenefader.FadetoLevel(1);
+        scenefader.FadetoLevel("Hub_Scene");
     }
 
     public void CloseGame()
@@ -24,7 +24,7 @@ public class MainMenuScript : MonoBehaviour
     }
     public void EnterTutorial()
     {
-        scenefader.FadetoLevel(4);
+        scenefader.FadetoLevel("LevelTutorial_Scene");
     }
 
 }

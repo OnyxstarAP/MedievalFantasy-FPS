@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class SceneFader : MonoBehaviour
 {
     public Animator animator;
-    private int levelToLoad;
+    private string levelToLoad;
 
     private void Awake()
     {
@@ -14,7 +14,7 @@ public class SceneFader : MonoBehaviour
         }
     }
 
-    public void FadetoLevel(int levelIndex)
+    public void FadetoLevel(string levelIndex)
     {
         levelToLoad = levelIndex;
         animator.SetTrigger("FadeOut");

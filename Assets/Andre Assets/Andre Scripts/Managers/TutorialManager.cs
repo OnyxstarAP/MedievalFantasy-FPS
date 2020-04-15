@@ -19,6 +19,8 @@ public class TutorialManager : MonoBehaviour
     public GameObject tutorialPhase3;
     [SerializeField]
     public GameObject tutorialPhase4;
+    [SerializeField]
+    public GameObject player;
 
     public static int targetsRemaining;
     private ProgressionCubeScirpt progressionCubeScript;
@@ -36,8 +38,16 @@ public class TutorialManager : MonoBehaviour
     void Update()
     {
         Tutorial();
+        outOfBounds();
     }
 
+    private void outOfBounds()
+    {
+        if(player.transform.position.y <= -5)
+        {
+            scenefader.FadetoLevel("LevelTutorial_Scene");
+        }
+    }
     private void Tutorial()
     {
         if (tutorialProgression == 0 && progressionCubeScript.playerOverlapping)
@@ -92,7 +102,7 @@ public class TutorialManager : MonoBehaviour
             yield return new WaitForSeconds(8);
             tutorialText.text = "Now, go out there and get 'em!";
             yield return new WaitForSeconds(6);
-            scenefader.FadetoLevel(1);
+            scenefader.FadetoLevel("Hub_Scene");
         }
 
     }

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoaderScript : MonoBehaviour
 {
     [SerializeField]
-    private int sceneID;
+    private string sceneName;
     public Material confirm;
     public Material standby;
     public Material complete;
@@ -22,11 +22,11 @@ public class SceneLoaderScript : MonoBehaviour
         meshRenderer = gameObject.GetComponent<MeshRenderer>();
         
 
-        if (sceneID == 2)
+        if (sceneName == "LevelTown_Scene")
         {
             sceneCompleted = GameManager.lvl1Complete;
         }
-        else if (sceneID == 3)
+        else if (sceneName == "LevelBoat_Scene")
         {
             sceneCompleted = GameManager.lvl2Complete;
         }
@@ -39,15 +39,15 @@ public class SceneLoaderScript : MonoBehaviour
 
     private void Update()
     {
-        StartLevel(sceneID);
+        StartLevel(sceneName);
     }
 
-     void StartLevel(int sceneNumber)
+     void StartLevel(string sceneName)
     {
         if (Input.GetKeyDown(KeyCode.E) && inTrigger == true)
         {
-            print("Load New layout");
-            SceneManager.LoadScene(sceneNumber);
+            Debug.Log("Loaded Scene: " + sceneName);
+            SceneManager.LoadScene(sceneName);
         }
     }
 

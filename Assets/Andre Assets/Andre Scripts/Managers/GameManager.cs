@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find("Player");
         currentScene = SceneManager.GetActiveScene();
         playerScript = player.GetComponent<PlayerControllerScript>();
+        GameOver = false;
         PlayerAlive = true;
     }
 
@@ -70,8 +71,8 @@ public class GameManager : MonoBehaviour
     {
         if (GameOver == true && Input.GetKeyDown(KeyCode.E))
         {
-            SceneManager.LoadScene(1);
             GameOver = false;
+            SceneManager.LoadScene("Hub_Scene");
         }
     }
 
