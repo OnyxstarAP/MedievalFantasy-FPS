@@ -672,6 +672,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   focusObject: {fileID: 0}
   rotateSpeed: 0
+  angleTimer: 0
+  xPosition: 0
+  yPosition: 0
+  zPosition: 0
 --- !u!1 &719974701
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,6 +960,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   focusObject: {fileID: 1602661046}
   rotateSpeed: 0.25
+  angleTimer: 0
+  xPosition: 0
+  yPosition: 0
+  zPosition: 0
 --- !u!1 &1002845000
 GameObject:
   m_ObjectHideFlags: 0

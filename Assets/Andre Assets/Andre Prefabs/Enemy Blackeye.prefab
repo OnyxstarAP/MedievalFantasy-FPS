@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5130376663108857230}
   m_Layer: 0
-  m_Name: Enemy (HouseAttacker)
+  m_Name: Enemy Blackeye
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,7 +102,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bc0f24191e94150479c514ab03bbdf25, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cf27026a0f46c0b4f9d1838e384006f8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -129,9 +129,9 @@ MonoBehaviour:
   XAxisFollow: 0
   billboardTarget: {fileID: 0}
   spriteOriginal: {fileID: 0}
-  spriteDamaged: {fileID: 21300000, guid: a1eb31a947c6b4d4b96feb70b3a7325d, type: 3}
-  spriteDefeated: {fileID: 21300000, guid: cb52541b27cc501499941619b4808dc7, type: 3}
-  spriteTelegraph: {fileID: 21300000, guid: 95517edd24dc6984987516af53dc0f91, type: 3}
+  spriteDamaged: {fileID: 21300000, guid: 544ed663da66d2348ae2ec307bab9ec0, type: 3}
+  spriteDefeated: {fileID: 21300000, guid: 97eb4721348d6ab47a430f521cd52f2d, type: 3}
+  spriteTelegraph: {fileID: 21300000, guid: e65e8271fc355c54ebd6712183b766db, type: 3}
   damagedSound: {fileID: 2039251959}
 --- !u!82 &2039251959
 AudioSource:

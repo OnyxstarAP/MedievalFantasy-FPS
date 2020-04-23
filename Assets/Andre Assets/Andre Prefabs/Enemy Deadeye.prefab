@@ -69,7 +69,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 998bbbe69b6f63b4bbc121856b91f5f6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2b268720e053e394bbf08cc30a5d4105, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -217,9 +217,9 @@ MonoBehaviour:
   XAxisFollow: 1
   billboardTarget: {fileID: 0}
   spriteOriginal: {fileID: 0}
-  spriteDamaged: {fileID: 21300000, guid: cc29b6976d1b86d4bbbe190f36aa8544, type: 3}
-  spriteDefeated: {fileID: 21300000, guid: 36c8588ccaf8b654b9954326d3eded9a, type: 3}
-  spriteTelegraph: {fileID: 21300000, guid: e9a5342961b3f2048abd6b14f95e35ea, type: 3}
+  spriteDamaged: {fileID: 21300000, guid: abc8402dff728a4498ba7769a98a1c38, type: 3}
+  spriteDefeated: {fileID: 21300000, guid: 92dd758fe1f1df74ebb5f8d131ffea79, type: 3}
+  spriteTelegraph: {fileID: 21300000, guid: 708d245272bd7cf48940bf658cfe4c82, type: 3}
   damagedSound: {fileID: 0}
 --- !u!54 &490812511763664731
 Rigidbody:
@@ -343,7 +343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1800880684461078581}
   m_Layer: 0
-  m_Name: Enemy (Eye)
+  m_Name: Enemy Deadeye
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
