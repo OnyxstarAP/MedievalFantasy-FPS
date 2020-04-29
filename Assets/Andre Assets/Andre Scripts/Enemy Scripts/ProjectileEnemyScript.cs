@@ -4,135 +4,166 @@ using UnityEngine;
 
 public class ProjectileEnemyScript : MonoBehaviour
 {
-    // The Object fired at the Target
+    // The Gameobject that will be fired at the Target
     [SerializeField]
     private GameObject enemyProjectile;
-    // The Object to Fire at
+    // The Target to fire at
     [SerializeField]
-    private GameObject enemyTarget;
-    // How many hits the Enemy can take before dying
+    private Transform target;
+
+    // This Enemies Health
     [SerializeField]
     private int enemyHealth = 3;
-    // The speed at which the enemy moves at
+    // This enemies Movement Speed
     [SerializeField]
     private float enemySpeed = 0.1f;
 
-    // The Distance the enemy can see a target from
+    // The current Distance this Enemy and the Target
     [SerializeField]
-    private float lineOfSight = 5f;
+    private float targetDistance;
+    // The radial Distance from this enemy to see a target from
+    [SerializeField]
+    private float radialSight = 5f;
     // The Distance the enemy will attack from
     [SerializeField]
-    private float distanceToAttack = 5f;
-    // The current distance of the target
+    private float attackRange = 5f;
 
-    // The speed in which bullets are fired at
+
+    // The Rate of Fire
     [SerializeField]
     private float fireRate = 2.5f;
     // If the enemy can currently fire
     [SerializeField]
     private bool canFire = false;
-    // If the Billboard angle is currently being used to fire
-    [SerializeField]
-    private bool useBillboard = true;
+
     // If the enemies current target is the Player
     [SerializeField]
     private bool targetPlayer;
+    // If the Billboard angle is currently being used to fire
     [SerializeField]
-    private bool alive = true;
+    private bool useBillboard = true;
+    [SerializeField]
+    private bool isAlive = true;
+    [SerializeField]
+    private bool isIFrame = false;
 
+    private IEnumerator enemyDeath;
+    private IEnumerator enemyDamage;
+    private IEnumerator enemyShooting;
+
+    private Quaternion targetDirection;
+    private Vector3 targetAim;
+    [SerializeField]
+    private Transform parentObject;
+    [SerializeField]
     private Rigidbody rb;
+    [SerializeField]
     private BillboardScript billboardScript;
     private void Start()
     {
         GameManager.Instance.EnemyCount += 1;
-        rb = transform.GetComponent<Rigidbody>();
-        // Will auto assign the Enemy Target to be the Player
-        // MAKE SURE TO REMOVE DURING HOUSE DEFENDER, THIS WILL CAUSE ALL ENEMIES TO ONLY ATTACK THE PLAYER
+
         if (targetPlayer)
-        { 
-        enemyTarget = GameObject.Find("Player");
-        }
-        
-        if (transform.GetChild(0).name == "EyeballSprite")
         {
-            billboardScript = transform.GetComponent<BillboardScript>();
+            target = GameObject.Find("Player").transform;
+        }
+        if (parentObject.GetChild(1).name == "Sprite")
+        {
+            billboardScript = parentObject.GetChild(1).GetComponent<BillboardScript>();
         }
         else
         {
             billboardScript = transform.GetChild(0).GetComponent<BillboardScript>();
         }
+        
+        enemyDamage = enemyDamaged();
+        enemyDeath = EnemyDefeat();
+        enemyShooting = EnemyTelegraph();
+        targetAim = target.position - transform.position;
+        targetDirection = Quaternion.LookRotation(targetAim);
+        
     }
     private void Update()
     {
-        if (enemyTarget != null)
+        if (target != null)
         {
-            MoveAndFire();
+            Movement();
+            Shooting();
+        }
+    }
+
+    private void Movement()
+    {
+        targetDistance = Vector3.Distance(target.position, transform.position);
+        // Movement Script
+        if (targetDistance <= radialSight && targetDistance >= attackRange && isAlive)
+        {
+            parentObject.LookAt(target);
+            rb.MovePosition(parentObject.position + (parentObject.forward * enemySpeed * Time.deltaTime));
+        }
+    }
+    private void Shooting()
+    {
+        if (targetDistance <= attackRange && isAlive && isIFrame == false)
+        {
+            // Follows the Players current Position
+            transform.rotation = targetDirection;
+            if (canFire == true)
+            {
+                StartCoroutine(enemyShooting);
+            }
         }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.transform.CompareTag("Projectile") && alive)
+        if (collider.transform.CompareTag("Projectile") && isAlive && isIFrame == false)
         {
             enemyHealth -= 1;
             if (enemyHealth <= 0)
             {
-                alive = false;
-                StartCoroutine(EnemyDefeat());
+                isAlive = false;
+                StopCoroutine(enemyShooting);
+                StartCoroutine(enemyDeath);
             }
             else
             {
-                billboardScript.EnemyDamaged();
+                isIFrame = true;
+                Destroy(collider.gameObject);
+                StopCoroutine(enemyShooting);
+                StartCoroutine(enemyDamage);
                 Player_Projectile playerProjectile = collider.gameObject.GetComponent<Player_Projectile>();
                 rb.AddForce(collider.transform.forward * playerProjectile.projectileKnockback, ForceMode.Impulse);
             }
         }
-
-        IEnumerator EnemyDefeat()
-        {
-            billboardScript.EnemyDefeated();
-            yield return new WaitForSeconds(3f);
-            Destroy(this.gameObject);
-            GameManager.Instance.EnemyCount -= 1;
-        }
     }
 
-    private void MoveAndFire()
+    IEnumerator EnemyDefeat()
     {
-        float targetDistance = Vector3.Distance(enemyTarget.transform.position, transform.position);
-        Vector3 targetAim = enemyTarget.transform.position - transform.position;
-        Quaternion targetDirection = Quaternion.LookRotation(targetAim);
-
-        // Movement Script
-        if (targetDistance <= lineOfSight && targetDistance >= distanceToAttack && alive)
-        {
-            if (useBillboard != true)
-            {
-                transform.LookAt(enemyTarget.transform);
-            }
-            rb.MovePosition(transform.position + (transform.forward * enemySpeed * Time.deltaTime));
-        }
-
-        if (targetDistance <= distanceToAttack && alive)
-        {  
-            // Follows the Players current Position
-            transform.rotation = targetDirection;
-            if (canFire == true )
-            {
-                StartCoroutine(EnemyFire());
-            }
-        }
-
-        IEnumerator EnemyFire()
-        {
-            canFire = false;
-            billboardScript.EnemyTelegraph();
-            yield return new WaitForSeconds(fireRate / 5);
-            billboardScript.EnemyNormal();
-            Instantiate(enemyProjectile, transform.position, targetDirection);
-            yield return new WaitForSeconds(fireRate);
-            canFire = true;
-        }
+        billboardScript.EnemyDefeat();
+        yield return new WaitForSeconds(3f);
+        Destroy(this.gameObject);
+        GameManager.Instance.EnemyCount -= 1;
     }
 
+    IEnumerator EnemyTelegraph()
+    {
+        canFire = false;
+        billboardScript.EnemyTelegraph();
+        yield return new WaitForSeconds(fireRate / 5);
+        Instantiate(enemyProjectile, transform.position, targetDirection);
+        yield return new WaitForSeconds(fireRate);
+        billboardScript.EnemyNeutral();
+        canFire = true;
+    }
+
+    IEnumerator enemyDamaged()
+    {
+        canFire = false;
+        billboardScript.EnemyDamaged();
+        yield return new WaitForSeconds(1.5f);
+        isIFrame = false;
+        canFire = true;
+        billboardScript.EnemyNeutral();
+    }
 }

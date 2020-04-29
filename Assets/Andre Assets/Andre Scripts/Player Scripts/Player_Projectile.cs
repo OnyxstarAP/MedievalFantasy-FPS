@@ -120,7 +120,9 @@ public class Player_Projectile : MonoBehaviour
     } 
     IEnumerator lifetimeCounter()
     {
-        yield return new WaitForSeconds(expireLimit);
+        yield return new WaitForSeconds(expireLimit / 2);
+        childObject.GetComponent<MeshCollider>().enabled = true;
+        yield return new WaitForSeconds(expireLimit / 2);
         Destroy(transform.gameObject);
     }
 
@@ -129,11 +131,12 @@ public class Player_Projectile : MonoBehaviour
         LayerMask otherLayer = other.gameObject.layer;
         if (isMaxCharged == false && other.tag != "Player")
         {
-            Destroy(transform.gameObject);
+            
+            //Destroy(transform.gameObject);
         }
         else if (isMaxCharged && other.tag != "Player" && other.tag != "Enemy")
         {
-            Destroy(transform.gameObject);
+            //Destroy(transform.gameObject);
         }
     }
 }

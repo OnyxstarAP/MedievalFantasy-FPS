@@ -1,35 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3499677305343929353
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5193535394279919902}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5193535394279919902
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3499677305343929353}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 41417119141680678}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4818090931487247317
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,6 +12,7 @@ GameObject:
   - component: {fileID: 9021371822061736054}
   - component: {fileID: 8903552483174619405}
   - component: {fileID: 2092635335}
+  - component: {fileID: 4955884273961739315}
   m_Layer: 0
   m_Name: Spear Tip
   m_TagString: Untagged
@@ -59,8 +30,7 @@ Transform:
   m_LocalRotation: {x: 0.50000006, y: 0.50000006, z: 0.49999997, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: -1.9599981}
   m_LocalScale: {x: 1, y: 2, z: 1.5000004}
-  m_Children:
-  - {fileID: 5193535394279919902}
+  m_Children: []
   m_Father: {fileID: 7259304038554523449}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
@@ -206,6 +176,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!64 &4955884273961739315
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4818090931487247317}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: -8126772515048647790, guid: 8cb037334a53d394e85b26ed47e15805, type: 3}
 --- !u!1 &5318861792951760224
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +411,7 @@ GameObject:
   - component: {fileID: 255380163}
   - component: {fileID: 4629242100145427612}
   m_Layer: 9
-  m_Name: PlayerProjectile
+  m_Name: Player Projectile
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -542,7 +526,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 7259304038554521797}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 4.75
   m_Height: 14.0049515
   m_Direction: 2
