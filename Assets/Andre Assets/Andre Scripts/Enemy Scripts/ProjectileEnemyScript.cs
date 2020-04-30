@@ -45,7 +45,7 @@ public class ProjectileEnemyScript : MonoBehaviour
     [SerializeField]
     private bool isAlive = true;
     [SerializeField]
-    private bool isIFrame = false;
+    private bool isStunned = false;
 
     private IEnumerator enemyDeath;
     private IEnumerator enemyDamage;
@@ -79,8 +79,7 @@ public class ProjectileEnemyScript : MonoBehaviour
         enemyDamage = enemyDamaged();
         enemyDeath = EnemyDefeat();
         enemyShooting = EnemyTelegraph();
-        targetAim = target.position - transform.position;
-        targetDirection = Quaternion.LookRotation(targetAim);
+;
         
     }
     private void Update()
@@ -88,8 +87,8 @@ public class ProjectileEnemyScript : MonoBehaviour
         if (target != null)
         {
             Movement();
-            Shooting();
         }
+        transform.LookAt(target);
     }
 
     private void Movement()
@@ -101,39 +100,44 @@ public class ProjectileEnemyScript : MonoBehaviour
             parentObject.LookAt(target);
             rb.MovePosition(parentObject.position + (parentObject.forward * enemySpeed * Time.deltaTime));
         }
+        else if (targetDistance <= attackRange && canFire && isStunned != true)
+        {
+            Shooting();
+        }
     }
     private void Shooting()
     {
-        if (targetDistance <= attackRange && isAlive && isIFrame == false)
-        {
-            // Follows the Players current Position
-            transform.rotation = targetDirection;
-            if (canFire == true)
-            {
-                StartCoroutine(enemyShooting);
-            }
-        }
+        // Follows the Players current Position
+            targetAim = target.position - transform.position;
+            targetDirection = Quaternion.LookRotation(targetAim);
+            canFire = false;
+            StartCoroutine(enemyShooting);
+            Debug.Log("Enemy Fired");
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collider.transform.CompareTag("Projectile") && isAlive && isIFrame == false)
+        Player_Projectile playerProjectile = other.GetComponent<Player_Projectile>();
+        Debug.Log("Making Contact Trigger");
+        if (other.CompareTag("Projectile") && isAlive && isStunned == false)
         {
+            Debug.Log("Enemy_Hit");
             enemyHealth -= 1;
+            if (enemyShooting != null)
+            {
+                StopCoroutine(enemyShooting);
+            }
+
             if (enemyHealth <= 0)
             {
                 isAlive = false;
-                StopCoroutine(enemyShooting);
                 StartCoroutine(enemyDeath);
             }
             else
             {
-                isIFrame = true;
-                Destroy(collider.gameObject);
-                StopCoroutine(enemyShooting);
+                isStunned = true;
                 StartCoroutine(enemyDamage);
-                Player_Projectile playerProjectile = collider.gameObject.GetComponent<Player_Projectile>();
-                rb.AddForce(collider.transform.forward * playerProjectile.projectileKnockback, ForceMode.Impulse);
+                rb.AddForce(other.transform.forward * playerProjectile.projectileKnockback, ForceMode.Impulse);
             }
         }
     }
@@ -142,28 +146,30 @@ public class ProjectileEnemyScript : MonoBehaviour
     {
         billboardScript.EnemyDefeat();
         yield return new WaitForSeconds(3f);
-        Destroy(this.gameObject);
+        Destroy(parentObject.gameObject);
         GameManager.Instance.EnemyCount -= 1;
     }
 
     IEnumerator EnemyTelegraph()
     {
-        canFire = false;
         billboardScript.EnemyTelegraph();
         yield return new WaitForSeconds(fireRate / 5);
         Instantiate(enemyProjectile, transform.position, targetDirection);
         yield return new WaitForSeconds(fireRate);
         billboardScript.EnemyNeutral();
         canFire = true;
+        enemyShooting = EnemyTelegraph();
     }
 
     IEnumerator enemyDamaged()
     {
+        isStunned = true;
         canFire = false;
         billboardScript.EnemyDamaged();
         yield return new WaitForSeconds(1.5f);
-        isIFrame = false;
+        isStunned = false;
         canFire = true;
         billboardScript.EnemyNeutral();
+        enemyDamage = enemyDamaged();
     }
 }
