@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - UICanvas
   - PlayerHitbox
+  - EnemyHurtbox
   layers:
   - Default
   - TransparentFX

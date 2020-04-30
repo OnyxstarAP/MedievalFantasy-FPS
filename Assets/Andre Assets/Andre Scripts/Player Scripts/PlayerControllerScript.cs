@@ -165,10 +165,10 @@ public class PlayerControllerScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("EnemyHurtbox"))
         {
             PlayerDamage();
-            print(playerHealth);
+            print("Player was hit by " + other.name + ". Your remaining health is: " + playerHealth);
         }
     }
 

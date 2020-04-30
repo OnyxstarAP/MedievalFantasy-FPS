@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileEnemyScript : MonoBehaviour
+public class EnemyMeleeScript : MonoBehaviour
 {
-    // The Gameobject that will be fired at the Target
-    [SerializeField]
-    private GameObject enemyProjectile;
     // The Target to fire at
     [SerializeField]
     private Transform target;
@@ -31,10 +28,10 @@ public class ProjectileEnemyScript : MonoBehaviour
 
     // The Rate of Fire
     [SerializeField]
-    private float fireRate = 2.5f;
+    private float attackCooldown = 2.5f;
     // If the enemy can currently fire
     [SerializeField]
-    private bool canFire = false;
+    private bool canAttack = false;
 
     // If the enemies current target is the Player
     [SerializeField]
@@ -46,19 +43,28 @@ public class ProjectileEnemyScript : MonoBehaviour
     private bool isAlive = true;
     [SerializeField]
     private bool isStunned = false;
+    [SerializeField]
+    private bool isInvulnerable = false;
 
     private IEnumerator enemyDeath;
     private IEnumerator enemyDamage;
-    private IEnumerator enemyShooting;
+    private IEnumerator enemyAttacking;
 
     private Quaternion targetDirection;
     private Vector3 targetAim;
+
+    [SerializeField]
+    private GameObject hurtbox;
+    private CapsuleCollider hurtboxCollider;
+    [SerializeField]
+    private float attackForce;
+
     [SerializeField]
     private Transform parentObject;
-    [SerializeField]
     private Rigidbody rb;
     [SerializeField]
     private BillboardScript billboardScript;
+
     private void Start()
     {
         GameManager.Instance.EnemyCount += 1;
@@ -66,6 +72,10 @@ public class ProjectileEnemyScript : MonoBehaviour
         if (targetPlayer)
         {
             target = GameObject.Find("Player").transform;
+            if (target == null)
+            {
+                Debug.Log("Target could not be found on " + transform.name + " Object.");
+            }
         }
         if (parentObject.GetChild(1).name == "Sprite")
         {
@@ -75,12 +85,13 @@ public class ProjectileEnemyScript : MonoBehaviour
         {
             billboardScript = transform.GetChild(0).GetComponent<BillboardScript>();
         }
-        
+        // Test Code: Note used due to time constraints
+        //parentObject.Find("Sprite").GetComponent<BillboardScript>();
         enemyDamage = enemyDamaged();
         enemyDeath = EnemyDefeat();
-        enemyShooting = EnemyTelegraph();
-;
-        
+        enemyAttacking = EnemyTelegraph();
+        hurtboxCollider = hurtbox.GetComponent<CapsuleCollider>();
+        rb = parentObject.GetComponent<Rigidbody>();
     }
     private void Update()
     {
@@ -100,31 +111,31 @@ public class ProjectileEnemyScript : MonoBehaviour
             parentObject.LookAt(target);
             rb.MovePosition(parentObject.position + (parentObject.forward * enemySpeed * Time.deltaTime));
         }
-        else if (targetDistance <= attackRange && canFire && isStunned != true)
+        else if (targetDistance <= attackRange && canAttack && isStunned != true)
         {
-            Shooting();
+            Attack();
         }
     }
-    private void Shooting()
+    private void Attack()
     {
         // Follows the Players current Position
-            targetAim = target.position - transform.position;
-            targetDirection = Quaternion.LookRotation(targetAim);
-            canFire = false;
-            StartCoroutine(enemyShooting);
-            Debug.Log("Enemy Fired");
+        targetAim = target.position - transform.position;
+        targetDirection = Quaternion.LookRotation(targetAim);
+        canAttack = false;
+        StartCoroutine(enemyAttacking);
+        Debug.Log("Enemy Attacked");
     }
 
     private void OnTriggerEnter(Collider other)
     {
         Player_Projectile playerProjectile = other.GetComponent<Player_Projectile>();
         Debug.Log(other.name + " is Making Contact Trigger");
-        if (other.CompareTag("Projectile") && isAlive && isStunned == false)
+        if (other.CompareTag("Projectile") && isAlive && isStunned == false && isInvulnerable == false)
         {
             enemyHealth -= 1;
-            if (enemyShooting != null)
+            if (enemyAttacking != null)
             {
-                StopCoroutine(enemyShooting);
+                StopCoroutine(enemyAttacking);
             }
 
             if (enemyHealth <= 0)
@@ -152,22 +163,29 @@ public class ProjectileEnemyScript : MonoBehaviour
     IEnumerator EnemyTelegraph()
     {
         billboardScript.EnemyTelegraph();
-        yield return new WaitForSeconds(fireRate / 5);
-        Instantiate(enemyProjectile, transform.position, targetDirection);
-        yield return new WaitForSeconds(fireRate);
+        yield return new WaitForSeconds(attackCooldown / 5);
+        isInvulnerable = true;
+        hurtboxCollider.enabled = true;
+        rb.AddForce(transform.forward * attackForce, ForceMode.Impulse);
+        yield return new WaitForSeconds(attackCooldown);
+        isInvulnerable = false;
+        if (hurtboxCollider.enabled)
+        { 
+            hurtboxCollider.enabled = false;
+        }
         billboardScript.EnemyNeutral();
-        canFire = true;
-        enemyShooting = EnemyTelegraph();
+        canAttack = true;
+        enemyAttacking = EnemyTelegraph();
     }
 
     IEnumerator enemyDamaged()
     {
         isStunned = true;
-        canFire = false;
+        canAttack = false;
         billboardScript.EnemyDamaged();
         yield return new WaitForSeconds(1.5f);
         isStunned = false;
-        canFire = true;
+        canAttack = true;
         billboardScript.EnemyNeutral();
         enemyDamage = enemyDamaged();
     }

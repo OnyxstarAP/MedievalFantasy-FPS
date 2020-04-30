@@ -9,7 +9,7 @@ public class EnemyProjectileScript : MonoBehaviour
     [SerializeField]
     private float expireLimit = 10;
     [SerializeField]
-    private float expireTimer = 0f;
+    private float expireTimer;
     [SerializeField]
     private LayerMask projIgnoreMask;
 

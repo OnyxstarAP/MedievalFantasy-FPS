@@ -69,22 +69,6 @@ public class BillboardScript : MonoBehaviour
         }
     }
 
-    public IEnumerator defeated()
-    {
-        print(gameObject.name + "has been Defeated");
-        spriteRenderer.sprite = spriteDefeated;
-        yield return new WaitForSeconds(1.5f);
-    }
-
-    public IEnumerator damaged()
-    {
-        print("Enemy was Damaged");
-        damagedSound.Play();
-        spriteRenderer.sprite = spriteDamaged;
-        yield return new WaitForSeconds(1.5f);
-        spriteRenderer.sprite = spriteNeutral;
-    }
-
     public void EnemyNeutral()
     {
         // Shown whenthe Enemy is not performing an action
