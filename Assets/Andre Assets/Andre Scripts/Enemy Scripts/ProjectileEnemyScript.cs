@@ -61,8 +61,7 @@ public class ProjectileEnemyScript : MonoBehaviour
     private BillboardScript billboardScript;
     private void Start()
     {
-        GameManager.Instance.EnemyCount += 1;
-
+        GameWatcher.enemyCount++;
         if (targetPlayer)
         {
             target = GameObject.Find("Player").transform;
@@ -100,7 +99,7 @@ public class ProjectileEnemyScript : MonoBehaviour
             parentObject.LookAt(target);
             rb.MovePosition(parentObject.position + (parentObject.forward * enemySpeed * Time.deltaTime));
         }
-        else if (targetDistance <= attackRange && canFire && isStunned != true)
+        else if (targetDistance <= attackRange && canFire && isStunned == false && isAlive)
         {
             Shooting();
         }
@@ -146,7 +145,7 @@ public class ProjectileEnemyScript : MonoBehaviour
         billboardScript.EnemyDefeat();
         yield return new WaitForSeconds(3f);
         Destroy(parentObject.gameObject);
-        GameManager.Instance.EnemyCount -= 1;
+        GameWatcher.enemyCount--;
     }
 
     IEnumerator EnemyTelegraph()

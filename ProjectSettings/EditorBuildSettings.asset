@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Andre Assets/Andre Scenes/Hub_Scene.unity
     guid: 3f37208178f8b7242b9c42beaddaeeb6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Andre Assets/Andre Scenes/LevelTown_Scene.unity
     guid: 1e0556ab3399c3140acacbba1038a072
   - enabled: 0

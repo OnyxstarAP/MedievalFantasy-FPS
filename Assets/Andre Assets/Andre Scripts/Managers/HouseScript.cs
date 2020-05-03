@@ -30,11 +30,11 @@ public class HouseScript : MonoBehaviour
     {
         healthbarscript.SetMaxHealth(houseHealth);
         // VV To be removed with new Game Manager VV
-        GameManager.Instance.ObjectiveCount += 1;
+        GameWatcher.objectiveCount++;
     }
     private void Update()
     {
-        Debug.Log(GameManager.Instance.ObjectiveCount);
+        Debug.Log(GameWatcher.objectiveCount);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -58,7 +58,7 @@ public class HouseScript : MonoBehaviour
         {
             isDestroyed = true;
             meshRenderer.material = destroyed;
-            GameManager.Instance.ObjectiveCount -= 1;
+            GameWatcher.objectiveCount--;
         }
 
         IEnumerator InvinceFlicker()

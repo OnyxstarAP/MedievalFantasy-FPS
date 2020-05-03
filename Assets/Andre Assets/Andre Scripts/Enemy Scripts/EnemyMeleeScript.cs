@@ -67,8 +67,7 @@ public class EnemyMeleeScript : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EnemyCount += 1;
-
+        GameWatcher.enemyCount++;
         if (targetPlayer)
         {
             target = GameObject.Find("Player").transform;
@@ -111,7 +110,7 @@ public class EnemyMeleeScript : MonoBehaviour
             parentObject.LookAt(target);
             rb.MovePosition(parentObject.position + (parentObject.forward * enemySpeed * Time.deltaTime));
         }
-        else if (targetDistance <= attackRange && canAttack && isStunned != true)
+        else if (targetDistance <= attackRange && canAttack && isStunned == false && isAlive)
         {
             Attack();
         }
@@ -157,7 +156,7 @@ public class EnemyMeleeScript : MonoBehaviour
         billboardScript.EnemyDefeat();
         yield return new WaitForSeconds(3f);
         Destroy(parentObject.gameObject);
-        GameManager.Instance.EnemyCount -= 1;
+        GameWatcher.enemyCount--;
     }
 
     IEnumerator EnemyTelegraph()

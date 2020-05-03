@@ -25,17 +25,11 @@ public class FirstPersonScript : MonoBehaviour
         CameraRotate();
     }
 
-    private void SensitivityAdjuster(float MouseSense)
-    {
-        mouseSensitivity = MouseSense;
-        Debug.Log(MouseSense);
-    }
-
     // Allows the mouse to move the camera
     void CameraRotate()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * GameWatcher.mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * GameWatcher.mouseSensitivity * Time.deltaTime;
 
         verRotation -= mouseY;
         // Prevents the Player from rotating past their Maximum position

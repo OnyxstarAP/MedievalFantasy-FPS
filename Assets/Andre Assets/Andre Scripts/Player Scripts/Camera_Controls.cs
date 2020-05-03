@@ -5,7 +5,7 @@ using UnityEngine;
 public class Camera_Controls : MonoBehaviour
 {
     [SerializeField]
-    private float mouseSensitivity = 360f;
+    private float mouseSenitivity = 360f;
 
     public Transform playerCharacter;
 
@@ -19,14 +19,14 @@ public class Camera_Controls : MonoBehaviour
 
     void Update()
     {
-        CameraRotate();
+        //CameraRotate();
     }
 
     // Allows the mouse to move the camera
     void CameraRotate()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * GameWatcher.mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * GameWatcher.mouseSensitivity * Time.deltaTime;
 
         verRotation -= mouseY;
         // Prevents the Player from rotating past their Maximum position

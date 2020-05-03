@@ -61,18 +61,24 @@ public class PlayerControllerScript : MonoBehaviour
 
     void Update()
     {
-        PlayerInput();
-        GroundCheck();
-        PlayerFire();
-        //SceneReset();
-        CanvasDisplay();
-        MovementSFX();
+        if (GameWatcher.gamePaused == false)
+        { 
+            PlayerInput();
+            GroundCheck();
+            PlayerFire();
+            //SceneReset();
+            CanvasDisplay();
+            MovementSFX();
+        }
     }
 
     void FixedUpdate()
     {
-        PlayerMovement();
-        JumpInput();
+        if (GameWatcher.gamePaused == false)
+        { 
+            PlayerMovement();
+            JumpInput();
+        }
     }
 
     private void PlayerInput()
@@ -142,11 +148,12 @@ public class PlayerControllerScript : MonoBehaviour
         }
     }
 
-    private void PlayerDamage()
+    private void PlayerHit()
     {
-        if (playerHealth >= 1)
+        GameWatcher.PlayerDamage();
+        if (playerHealth <= 0)
         {
-        playerHealth -= 1;
+            GameWatcher.playerAlive = false;
         }
         else
         {
@@ -167,8 +174,7 @@ public class PlayerControllerScript : MonoBehaviour
     {
         if (other.CompareTag("EnemyHurtbox"))
         {
-            PlayerDamage();
-            print("Player was hit by " + other.name + ". Your remaining health is: " + playerHealth);
+            
         }
     }
 

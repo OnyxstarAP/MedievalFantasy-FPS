@@ -12,24 +12,24 @@ public class HubManager : MonoBehaviour
 
     void Start()
     {
-        if (GameManager.lvl1Complete && GameManager.lvl2Complete)
-        {
-            normalCanvas.gameObject.SetActive(false);
-            gameClearCanvas.gameObject.SetActive(true);
-        }
+        //if (GameManager.lvl1Complete && GameManager.lvl2Complete)
+        //{
+        //    normalCanvas.gameObject.SetActive(false);
+        //    gameClearCanvas.gameObject.SetActive(true);
+        //}
   }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
+        //if (Input.GetKeyDown(KeyCode.T))
+        //{
 
-            GameManager.lvl1Complete = false;
-            GameManager.lvl2Complete = false;
-            GameManager.Instance.player.SetActive(false);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            SceneManager.LoadScene(0);
-        }
+        //    GameManager.lvl1Complete = false;
+        //    GameManager.lvl2Complete = false;
+        //    GameManager.Instance.player.SetActive(false);
+        //    Cursor.lockState = CursorLockMode.None;
+        //    Cursor.visible = true;
+        //    SceneManager.LoadScene(0);
+        //}
     }
 }

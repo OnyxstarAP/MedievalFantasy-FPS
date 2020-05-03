@@ -18,6 +18,7 @@ public class SceneFader : MonoBehaviour
     {
         levelToLoad = levelIndex;
         animator.SetTrigger("FadeOut");
+        Debug.Log("Loading " + levelIndex);
     }
     
     public void OnFadeComplete()
